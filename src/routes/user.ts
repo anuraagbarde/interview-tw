@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import GameService from '../services/gameService.js';
+import UserService from '../services/UserService.js';
 import { BadRequestError } from '../utils/error.js';
 
 const tryCatchWrapper = (fn: (req: express.Request, res: express.Response) => express.Response) => {
@@ -19,14 +19,10 @@ const tryCatchWrapper = (fn: (req: express.Request, res: express.Response) => ex
 };
 
 router.get(
-  '/get',
+  '/:userId/summary',
   tryCatchWrapper((req, res) => {
-    const {
-      msg,
-    }: {
-      msg: string;
-    } = req.body;
-    const response = GameService.get(msg);
+    const inputUser = req.params.userId;
+    const response = UserService.getUserSummary(inputUser);
 
     res.status(200).json(response);
     return res;
